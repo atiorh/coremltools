@@ -1838,7 +1838,7 @@ def _expand(context, name, tensor, shape):
     context.add(res)
 
 
-@register_torch_op
+@register_torch_op(torch_alias=["repeat"])
 def expand(context, node):
     inputs = _get_inputs(context, node, expected=2)
     x = inputs[0]
