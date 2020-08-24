@@ -1588,7 +1588,7 @@ def select(context, node):
 
 @register_torch_op
 def ones(context, node):
-    inputs = _get_inputs(context, node, expected=6)
+    inputs = _get_inputs(context, node, expected=5) # 6)
     size = inputs[0]
     # dtype = NUM_TO_TORCH_DTYPE[inputs[1].val] unused
     # layout = inputs[2] unused
@@ -1860,7 +1860,7 @@ def _expand(context, name, tensor, shape):
     context.add(res)
 
 
-@register_torch_op
+@register_torch_op(torch_alias=["repeat"])
 def expand(context, node):
     inputs = _get_inputs(context, node, expected=2)
     x = inputs[0]
