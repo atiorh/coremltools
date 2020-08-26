@@ -1862,10 +1862,9 @@ def _expand(context, name, tensor, shape):
 
 @register_torch_op(torch_alias=["repeat"])
 def expand(context, node):
-    inputs = _get_inputs(context, node, expected=2)
+    inputs = _get_inputs(context, node, expected=None) # 2)
     x = inputs[0]
     shape = inputs[1].val
-
     _expand(context, node.name, x, shape)
 
 
