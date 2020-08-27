@@ -1784,8 +1784,8 @@ def to(context, node):
         # memory_format = inputs[5] # usually None
     elif len(inputs) == 5:
         _input = inputs[0]
-        device = inputs[1]
-        dtype = inputs[2].val
+        # device = inputs[1]
+        dtype = inputs[1].val
         # non_blocking = inputs[3]
         # copy = inputs[4]
     elif len(inputs) == 4:

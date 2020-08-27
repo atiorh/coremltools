@@ -1263,33 +1263,35 @@ def l2_pool(const_context, builder, op):
     _convert_pool(const_context=const_context, builder=builder, op=op, mode="l2")
 
 
-# @register_mil_to_nn_mapping
-# def linear(const_context, builder, op):
-#     out_channels, in_channels = op.weight.shape
-#     has_bias = op.bias.val is not None
-#     builder.add_inner_product(
-#         name=op.name,
-#         W=op.weight.val,
-#         b=op.bias.val,
-#         input_channels=in_channels,
-#         output_channels=out_channels,
-#         has_bias=has_bias,
-#         input_name=make_input(const_context, builder, op.x),
-#         output_name=op.outputs[0].name,
-#     )
-
 @register_mil_to_nn_mapping
 def linear(const_context, builder, op):
     out_channels, in_channels = op.weight.shape
     has_bias = op.bias.val is not None
-    builder.add_batched_mat_mul(
+    if len(op.x.shape) > 3:
+        from IPython import embed; embed()
+    builder.add_inner_product(
         name=op.name,
-        input_names=make_input(const_context, builder, [op.x]),
+        W=op.weight.val,
+        b=op.bias.val,
+        input_channels=in_channels,
+        output_channels=out_channels,
+        has_bias=has_bias,
+        input_name=make_input(const_context, builder, op.x),
         output_name=op.outputs[0].name,
-        W=op.weight.val.T,
-        bias=op.bias.val,
-        weight_matrix_rows=in_channels,
-        weight_matrix_columns=out_channels)
+     )
+
+# @register_mil_to_nn_mapping
+# def linear(const_context, builder, op):
+#     out_channels, in_channels = op.weight.shape
+#     has_bias = op.bias.val is not None
+#     builder.add_batched_mat_mul(
+#         name=op.name,
+#         input_names=make_input(const_context, builder, [op.x]),
+#         output_name=op.outputs[0].name,
+#         W=op.weight.val.T,
+#         bias=op.bias.val,
+#         weight_matrix_rows=in_channels,
+#         weight_matrix_columns=out_channels)
 
 
 @register_mil_to_nn_mapping
